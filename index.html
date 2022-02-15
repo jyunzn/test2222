@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ScrollMagic/2.0.8/ScrollMagic.min.js" integrity="sha512-8E3KZoPoZCD+1dgfqhPbejQBnQfBXe8FuwL4z/c8sTrgeDMFEnoyTlH3obB4/fV+6Sg0a0XF+L/6xS4Xx1fUEg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+</head>
+<body>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            outline: 1px solid skyblue;
+        }
+        .test {
+            height: 500px;
+            background-color: skublue;
+        }
+        .c-wrapper {
+            height: 100vh;
+            display: flex;
+            align-items: flex-end;
+        }
+        .horizontal-wrap {
+            position: relative;
+            overflow: hidden;
+        }
+        .horizontal-content {
+            width: max-content;
+        }
+        .box {
+            width: 100vw;
+
+        }
+        .box-red {
+            width: 100vw;
+            height: 100px;
+            background-color: red;
+        }
+        .box-blue {
+            width: 100vw;
+            height: 200px;
+            background-color: blue;
+        }
+        .box-yellow {
+            width: 100vw;
+            height: 300px;
+            background-color: yellow;
+        }
+
+        .c-title {
+            position: absolute;
+            top: 0;
+            font-size: 50px;
+            left: 0;
+            transition: top ease 1s;
+        }
+    </style>
+    <div class="test">
+        無關緊要
+    </div>
+    <section class="p-index__s-whyus">
+        <div class="horizontal">
+            <div class="horizontal-wrap">
+                <div class="c-title">TITLE</div>
+                <div class="horizontal-content">
+                    <div class="c-wrapper">
+                        <div class="box box-red"></div>
+                        <div class="box box-blue"></div>
+                        <div class="box box-yellow"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <div class="test">
+        無關緊要
+    </div>
+<script>
+    ;(function (window, undefined) {
+        $(function () {
+            const eHorizontal = $('.horizontal')
+            const eHorizontalContent = $('.horizontal-content')
+            const eSWhyus = $('.p-index__s-whyus')
+            const eTitle = $('.c-title')
+
+
+            let nCanScroll = eHorizontalContent.width() - window.innerWidth;
+
+            var controller = new ScrollMagic.Controller();
+
+            console.log(nCanScroll)
+
+            var scene = new ScrollMagic.Scene({
+                duration: nCanScroll,
+                offset: 0,
+                triggerElement: '.p-index__s-whyus',
+                triggerHook: 'onLeave'
+            })
+                .setPin('.horizontal')
+                .addTo(controller)
+                .on('progress', function (context) {
+
+                    if (context.progress < 0.33) {
+                        eTitle.css('top', 500)
+                    } else if (context.progress < 0.66) {
+                        eTitle.css('top', 300)
+                    } else {
+                        eTitle.css('top', 0)
+                    }
+                    eHorizontalContent[0].style.transform = `translateX(${context.progress * -100}%)`
+                    console.log(context.progress)
+                })
+
+
+            function handleResize() {
+                nCanScroll = eHorizontalContent.width() - window.innerWidth;
+                scene.duration(nCanScroll)
+            }
+
+            window.addEventListener('resize', handleResize)
+        })
+    })(window);
+</script>
+
+</body>
+</html>
